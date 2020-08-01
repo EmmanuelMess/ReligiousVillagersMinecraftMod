@@ -1,29 +1,29 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "religious_villagers_mod",
   "version": "${version}",
 
-  "name": "Example Mod",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "name": "Religious Villagers Mod",
+  "description": "Adds religion to villages!",
   "authors": [
-    "Me!"
+    "EmmanuelMess"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://github.com/EmmanuelMess",
+    "sources": "https://github.com/EmmanuelMess/ReligiousVillagersMinecraftMod"
   },
 
-  "license": "CC0-1.0",
-  "icon": "assets/modid/icon.png",
+  "license": "GPT-3",
+  "icon": "assets/religious_villagers_mod/icon.png",
 
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleModKt::init"
+      "com.emmanuelmess.religiousvillagers.ReligiousVillagersMod::init"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "religious_villagers_mod.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.8.7",
