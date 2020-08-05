@@ -21,7 +21,7 @@ public class ReligiousVillagersMod implements ModInitializer {
 	public void onInitialize() {
 	}
 
-	public static ImmutableList<com.mojang.datafixers.util.Pair<Integer, ? extends Task<? super VillagerEntity>>> createPrayTasks(float speed) {
+	public static ImmutableList<Pair<Integer, ? extends Task<? super VillagerEntity>>> createPrayTasks(float speed) {
 		return ImmutableList.of(
 				Pair.of(1, new FindTempleTask()),
 				Pair.of(2, new VillagerWalkTowardsTask(
@@ -63,9 +63,7 @@ public class ReligiousVillagersMod implements ModInitializer {
 		VillagerEntityAccessor.setPointsOfInterest(
 				new ImmutableMap.Builder<MemoryModuleType<GlobalPos>, BiPredicate<VillagerEntity, PointOfInterestType>>()
 						.putAll(VillagerEntity.POINTS_OF_INTEREST)
-						.put(MOSQUE_POINT, (villagerEntity, pointOfInterestType) -> {
-							return pointOfInterestType == BELIEVER;
-						})
+						.put(MOSQUE_POINT, (villagerEntity, pointOfInterestType) -> pointOfInterestType == BELIEVER)
 						.build());
 	}
 }
