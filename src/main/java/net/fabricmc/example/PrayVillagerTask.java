@@ -16,6 +16,8 @@ public class PrayVillagerTask extends Task<LivingEntity> {
     }
 
     protected boolean shouldRun(ServerWorld world, LivingEntity entity) {
+        ReligiousVillagersMod.LOGGER.info("shouldRun!");
+
         if(!entity.getBrain().getOptionalMemory(ReligiousVillagersMod.MOSQUE_POINT).isPresent()) {
             entity.getBrain().remember(ReligiousVillagersMod.MOSQUE_POINT, GlobalPos.create(world.getRegistryKey(), new BlockPos(0, 4, 0)));
         }
@@ -26,11 +28,13 @@ public class PrayVillagerTask extends Task<LivingEntity> {
             Brain<?> brain = entity.getBrain();
             GlobalPos globalPos = brain.getOptionalMemory(ReligiousVillagersMod.MOSQUE_POINT).get();
 
-            return world.getRegistryKey() == globalPos.getDimension();
+            return  globalPos.getPos().isWithinDistance(entity.getPos(), 2.0D);
         }
     }
 
     protected boolean shouldKeepRunning(ServerWorld world, LivingEntity entity, long time) {
+        ReligiousVillagersMod.LOGGER.info("shouldKeepRunning!");
+
         Optional<GlobalPos> optional = entity.getBrain().getOptionalMemory(ReligiousVillagersMod.MOSQUE_POINT);
         if (!optional.isPresent()) {
             return false;
@@ -43,6 +47,8 @@ public class PrayVillagerTask extends Task<LivingEntity> {
     }
 
     protected void run(ServerWorld world, LivingEntity entity, long time) {
+        ReligiousVillagersMod.LOGGER.info("run!");
+
         entity.getBrain().getOptionalMemory(MemoryModuleType.OPENED_DOORS).ifPresent((set) -> {
             OpenDoorsTask.closeOpenedDoors(world, ImmutableList.of(), 0, entity, entity.getBrain());
         });

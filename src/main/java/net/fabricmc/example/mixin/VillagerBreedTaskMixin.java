@@ -16,7 +16,7 @@ public class VillagerBreedTaskMixin {
 	private void setChildHome(ServerWorld world, VillagerEntity child, BlockPos pos, CallbackInfo info) {
 		VillagerBreedTask $this = (VillagerBreedTask) (Object) this;
 
-		System.out.println("Remembered mosque");
+		ReligiousVillagersMod.LOGGER.info("Remembered mosque");
 		child.getBrain().remember(ReligiousVillagersMod.MOSQUE_POINT, GlobalPos.create(world.getRegistryKey(), BlockPos.ORIGIN));
 	}
 }

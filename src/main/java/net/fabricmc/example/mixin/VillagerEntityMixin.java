@@ -16,24 +16,13 @@ public class VillagerEntityMixin {
 	private void initBrain(Brain<VillagerEntity> brain, CallbackInfo info) {
 		VillagerEntity $this = (VillagerEntity) (Object) this;
 
-		System.out.println("initBrain: " + $this.toString());
+		ReligiousVillagersMod.LOGGER.info("initBrain: " + $this.toString());
 
 		if (!$this.isBaby()) {
 			brain.setTaskList(
 					ReligiousVillagersMod.PRAY,
-					createPrayTasks(0.5F),
-					ImmutableSet.of()
+					createPrayTasks(1F)
 			);
-		}
-	}
-
-	@Inject(at = @At("RETURN"), method = "initBrain(Lnet/minecraft/entity/ai/brain/Brain;)V", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
-	private void initBrainReturn(Brain<VillagerEntity> brain, CallbackInfo info) {
-		if(brain.getSchedule() != null) {
-			System.out.println("schedule: " + brain.getSchedule().toString());
-			System.out.println("Schedule.SIMPLE: " + Schedule.SIMPLE);
-			System.out.println("Schedule.VILLAGER: " + Schedule.VILLAGER_DEFAULT);
-			System.out.println("initBrain: " + brain.getSchedule().getActivityForTime(21));
 		}
 	}
 }
