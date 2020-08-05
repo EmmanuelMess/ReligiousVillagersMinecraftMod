@@ -2,18 +2,16 @@ package net.fabricmc.example;
 
 import com.google.common.collect.*;
 import com.mojang.datafixers.util.Pair;
-import com.mojang.serialization.*;
-import net.fabricmc.api.ModInitializer;
+import net.fabricmc.api.*;
+import net.fabricmc.example.mixin.*;
 import net.minecraft.entity.ai.brain.*;
 import net.minecraft.entity.ai.brain.task.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.util.*;
 import net.minecraft.util.dynamic.*;
 import net.minecraft.util.registry.*;
-import net.minecraft.village.*;
 import net.minecraft.world.poi.*;
 
-import java.lang.reflect.*;
 import java.util.*;
 import java.util.function.*;
 
@@ -41,8 +39,12 @@ public class ExampleMod implements ModInitializer {
 		);
 	}
 
-	public static final Activity PRAY = register("pray");
-	public static final MemoryModuleType<GlobalPos> MOSQUE_POINT = register("mosque_point", GlobalPos.CODEC);
+	public static final Activity PRAY = Registry.register(Registry.ACTIVITY, "pray", new Activity("pray"));
+	public static final MemoryModuleType<GlobalPos> MOSQUE_POINT = Registry.register(
+			Registry.MEMORY_MODULE_TYPE,
+			new Identifier("mosque_point"),
+			new MemoryModuleType<>(Optional.of(GlobalPos.CODEC))
+	);
 
 	static {
 		addScheduled();
@@ -50,108 +52,23 @@ public class ExampleMod implements ModInitializer {
 		addPointsOfInterest();
 	}
 
-	private static <U> MemoryModuleType<U> register(String id, Codec<GlobalPos> codec) {
-		try {
-			return (MemoryModuleType) Registry.register(
-					Registry.MEMORY_MODULE_TYPE,
-					new Identifier(id),
-					createMemoryModuleType(Optional.of(codec))
-			);
-		} catch (NoSuchMethodException | ClassNotFoundException | IllegalAccessException | InvocationTargetException
-				| InstantiationException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-	}
-
-	private static Activity register(String id) {
-		try {
-			return Registry.register(Registry.ACTIVITY, id, createActivity(id));
-		} catch (NoSuchMethodException | ClassNotFoundException | IllegalAccessException | InvocationTargetException
-				| InstantiationException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
-	}
-
-	private static Activity createActivity(String id)
-			throws NoSuchMethodException, ClassNotFoundException, IllegalAccessException,
-			InvocationTargetException, InstantiationException {
-		Class<Activity> activityClass = (Class<Activity>) Class.forName("net.minecraft.entity.ai.brain.Activity");
-		Constructor<Activity> constructor = activityClass.getDeclaredConstructor(String.class);
-		constructor.setAccessible(true);
-		Activity activity = constructor.newInstance(id);
-		constructor.setAccessible(false);
-		return activity;
-	}
-
-	private static MemoryModuleType<GlobalPos> createMemoryModuleType(Optional<Codec<GlobalPos>> factory)
-			throws NoSuchMethodException, ClassNotFoundException, IllegalAccessException,
-			InvocationTargetException, InstantiationException {
-		Class<MemoryModuleType<GlobalPos>> memoryModuleTypeClass =
-				(Class<MemoryModuleType<GlobalPos>>) Class.forName("net.minecraft.entity.ai.brain.MemoryModuleType");
-		Constructor<MemoryModuleType<GlobalPos>> constructor = memoryModuleTypeClass.getDeclaredConstructor(Optional.class);
-		constructor.setAccessible(true);
-		MemoryModuleType<GlobalPos> memoryModuleType = constructor.newInstance(factory);
-		constructor.setAccessible(false);
-		return memoryModuleType;
-	}
-
 	private static void addScheduled() {
-		try {
-			Field field = Schedule.class.getDeclaredField("VILLAGER_DEFAULT");
-			Field modifiersField = Field.class.getDeclaredField("modifiers");
-			modifiersField.setAccessible(true);
-			modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
-			Schedule newSchedule = new ScheduleBuilder(Schedule.VILLAGER_DEFAULT).withActivity(10, ExampleMod.PRAY).build();
-
-			field.set(null, newSchedule);
-		}catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
+		ScheduleAccessor.setVillagerDefault(
+				new ScheduleBuilder(Schedule.VILLAGER_DEFAULT).withActivity(10, ExampleMod.PRAY).build());
 	}
 
 	private static void addMemoryModules() {
-		try {
-			Field field = VillagerEntity.class.getDeclaredField("MEMORY_MODULES");
-			field.setAccessible(true);
-			Field modifiersField = Field.class.getDeclaredField("modifiers");
-			modifiersField.setAccessible(true);
-			modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
-			ImmutableList<MemoryModuleType<?>> list = (ImmutableList<MemoryModuleType<?>>) field.get(null);
-			ImmutableList<MemoryModuleType<?>> newList = new ImmutableList.Builder<MemoryModuleType<?>>()
-					.addAll(list).add(MOSQUE_POINT).build();
-
-			field.set(null, newList);
-		}catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
+		VillagerEntityAccessor.setMemoryModules(new ImmutableList.Builder<MemoryModuleType<?>>()
+				.addAll(VillagerEntity.MEMORY_MODULES).add(MOSQUE_POINT).build());
 	}
 
 	private static void addPointsOfInterest() {
-		try {
-			Field field = VillagerEntity.class.getDeclaredField("POINTS_OF_INTEREST");
-			field.setAccessible(true);
-			Field modifiersField = Field.class.getDeclaredField("modifiers");
-			modifiersField.setAccessible(true);
-			modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
-
-			Map<MemoryModuleType<GlobalPos>, BiPredicate<VillagerEntity, PointOfInterestType>> map =
-					(Map<MemoryModuleType<GlobalPos>, BiPredicate<VillagerEntity, PointOfInterestType>>) field.get(null);
-			Map<MemoryModuleType<GlobalPos>, BiPredicate<VillagerEntity, PointOfInterestType>> newList =
-					new ImmutableMap.Builder<MemoryModuleType<GlobalPos>, BiPredicate<VillagerEntity, PointOfInterestType>>()
-							.putAll(map).put(MOSQUE_POINT, (villagerEntity, pointOfInterestType) -> {
-						return pointOfInterestType == PointOfInterestType.MEETING;
-					}).build();
-
-			field.set(null, newList);
-		}catch (Exception e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
-		}
+		VillagerEntityAccessor.setPointsOfInterest(
+				new ImmutableMap.Builder<MemoryModuleType<GlobalPos>, BiPredicate<VillagerEntity, PointOfInterestType>>()
+						.putAll(VillagerEntity.POINTS_OF_INTEREST)
+						.put(MOSQUE_POINT, (villagerEntity, pointOfInterestType) -> {
+							return pointOfInterestType == PointOfInterestType.MEETING;
+						})
+						.build());
 	}
 }

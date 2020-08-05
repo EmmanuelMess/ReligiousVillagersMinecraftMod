@@ -22,6 +22,7 @@
       "net.fabricmc.example.ExampleMod"
     ]
   },
+  "accessWidener": "modid.accesswidener",
   "mixins": [
     "modid.mixins.json"
   ],

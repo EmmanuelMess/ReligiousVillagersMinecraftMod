@@ -1,7 +1,6 @@
 package net.fabricmc.example.mixin;
 
 import com.google.common.collect.*;
-import com.mojang.datafixers.util.*;
 import net.fabricmc.example.*;
 import net.minecraft.entity.ai.brain.*;
 import net.minecraft.entity.passive.*;

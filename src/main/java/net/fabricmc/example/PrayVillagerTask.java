@@ -1,7 +1,6 @@
 package net.fabricmc.example;
 
 import com.google.common.collect.*;
-import net.minecraft.block.*;
 import net.minecraft.entity.*;
 import net.minecraft.entity.ai.brain.*;
 import net.minecraft.entity.ai.brain.task.*;
