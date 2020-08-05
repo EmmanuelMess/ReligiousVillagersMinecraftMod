@@ -23,6 +23,7 @@ public class ReligiousVillagersMod implements ModInitializer {
 
 	public static ImmutableList<com.mojang.datafixers.util.Pair<Integer, ? extends Task<? super VillagerEntity>>> createPrayTasks(float speed) {
 		return ImmutableList.of(
+				Pair.of(1, new FindTempleTask()),
 				Pair.of(2, new VillagerWalkTowardsTask(
 						MOSQUE_POINT, speed, 1, 150, 1200
 				)),
