@@ -18,7 +18,7 @@ public class VillagerEntityMixin {
 		if (!$this.isBaby()) {
 			brain.setTaskList(
 					ReligiousVillagersMod.PRAY,
-					createPrayTasks(1F)
+					createPrayTasks(0.75F)
 			);
 		}
 	}
