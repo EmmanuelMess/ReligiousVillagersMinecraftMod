@@ -40,7 +40,7 @@ public class ReligiousVillagersMod implements ModInitializer {
 	);
 
 	public static final PointOfInterestType BELIEVER = PointOfInterestType.register(
-			"believer", PointOfInterestType.getAllStatesOf(Blocks.DIAMOND_BLOCK), 32, 100
+			"believer", PointOfInterestType.getAllStatesOf(Blocks.EMERALD_BLOCK), 32, 100
 	);
 
 	static {
