@@ -29,16 +29,6 @@ public class ReligiousVillagersMod implements ModInitializer {
 				)),
 				Pair.of(3, new ForgetCompletedPointOfInterestTask(BELIEVER, MOSQUE_POINT)),
 				Pair.of(3, new PrayVillagerTask()),
-				Pair.of(5, new RandomTask(
-						ImmutableMap.of(),
-						ImmutableList.of(
-								Pair.of(new WalkHomeTask(speed), 1),
-								Pair.of(new WanderIndoorsTask(speed), 4),
-								Pair.of(new GoToPointOfInterestTask(speed, 4), 2),
-								Pair.of(new WaitTask(20, 40), 2)
-						)
-				)),
-				VillagerTaskListProvider.createBusyFollowTask(),
 				Pair.of(99, new ScheduleActivityTask())
 		);
 	}
@@ -74,7 +64,6 @@ public class ReligiousVillagersMod implements ModInitializer {
 				new ImmutableMap.Builder<MemoryModuleType<GlobalPos>, BiPredicate<VillagerEntity, PointOfInterestType>>()
 						.putAll(VillagerEntity.POINTS_OF_INTEREST)
 						.put(MOSQUE_POINT, (villagerEntity, pointOfInterestType) -> {
-							ReligiousVillagersMod.LOGGER.info("dfsdfsdfsdfsdfsdfsdfsdfsd");
 							return pointOfInterestType == BELIEVER;
 						})
 						.build());
