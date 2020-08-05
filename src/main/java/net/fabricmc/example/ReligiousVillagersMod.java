@@ -15,14 +15,14 @@ import net.minecraft.world.poi.*;
 import java.util.*;
 import java.util.function.*;
 
-public class ExampleMod implements ModInitializer {
+public class ReligiousVillagersMod implements ModInitializer {
 	@Override
 	public void onInitialize() {
 	}
 
 	public static ImmutableList<com.mojang.datafixers.util.Pair<Integer, ? extends Task<? super VillagerEntity>>> createPrayTasks(float speed) {
 		return ImmutableList.of(
-				Pair.of(2, new VillagerWalkTowardsTask(ExampleMod.MOSQUE_POINT, speed, 1, 1500000, 1200)),
+				Pair.of(2, new VillagerWalkTowardsTask(ReligiousVillagersMod.MOSQUE_POINT, speed, 1, 1500000, 1200)),
 				//Pair.of(3, new ForgetCompletedPointOfInterestTask(PointOfInterestType.HOME, MemoryModuleType.HOME)),
 				Pair.of(3, new PrayVillagerTask()),
 				Pair.of(5, new RandomTask(
@@ -54,12 +54,12 @@ public class ExampleMod implements ModInitializer {
 
 	private static void addScheduled() {
 		ScheduleAccessor.setVillagerDefault(
-				new ScheduleBuilder(Schedule.VILLAGER_DEFAULT).withActivity(10, ExampleMod.PRAY).build());
+				new ScheduleBuilder(Schedule.VILLAGER_DEFAULT).withActivity(10, ReligiousVillagersMod.PRAY).build());
 	}
 
 	private static void addMemoryModules() {
 		VillagerEntityAccessor.setMemoryModules(new ImmutableList.Builder<MemoryModuleType<?>>()
-				.addAll(VillagerEntity.MEMORY_MODULES).add(MOSQUE_POINT).build());
+				.addAll(VillagerEntityAccessor.getMemoryModules()).add(MOSQUE_POINT).build());
 	}
 
 	private static void addPointsOfInterest() {

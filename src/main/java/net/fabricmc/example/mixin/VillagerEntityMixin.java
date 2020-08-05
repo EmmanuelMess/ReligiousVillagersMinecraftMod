@@ -8,10 +8,10 @@ import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.*;
 
-import static net.fabricmc.example.ExampleMod.*;
+import static net.fabricmc.example.ReligiousVillagersMod.*;
 
 @Mixin(VillagerEntity.class)
-public class ExampleMixin {
+public class VillagerEntityMixin {
 	@Inject(at = @At("HEAD"), method = "initBrain(Lnet/minecraft/entity/ai/brain/Brain;)V", locals = LocalCapture.CAPTURE_FAILEXCEPTION)
 	private void initBrain(Brain<VillagerEntity> brain, CallbackInfo info) {
 		VillagerEntity $this = (VillagerEntity) (Object) this;
@@ -20,7 +20,7 @@ public class ExampleMixin {
 
 		if (!$this.isBaby()) {
 			brain.setTaskList(
-					ExampleMod.PRAY,
+					ReligiousVillagersMod.PRAY,
 					createPrayTasks(0.5F),
 					ImmutableSet.of()
 			);

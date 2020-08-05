@@ -16,27 +16,27 @@ public class PrayVillagerTask extends Task<LivingEntity> {
     }
 
     protected boolean shouldRun(ServerWorld world, LivingEntity entity) {
-        if(!entity.getBrain().getOptionalMemory(ExampleMod.MOSQUE_POINT).isPresent()) {
-            entity.getBrain().remember(ExampleMod.MOSQUE_POINT, GlobalPos.create(world.getRegistryKey(), new BlockPos(0, 4, 0)));
+        if(!entity.getBrain().getOptionalMemory(ReligiousVillagersMod.MOSQUE_POINT).isPresent()) {
+            entity.getBrain().remember(ReligiousVillagersMod.MOSQUE_POINT, GlobalPos.create(world.getRegistryKey(), new BlockPos(0, 4, 0)));
         }
 
         if (entity.hasVehicle()) {
             return false;
         } else {
             Brain<?> brain = entity.getBrain();
-            GlobalPos globalPos = brain.getOptionalMemory(ExampleMod.MOSQUE_POINT).get();
+            GlobalPos globalPos = brain.getOptionalMemory(ReligiousVillagersMod.MOSQUE_POINT).get();
 
             return world.getRegistryKey() == globalPos.getDimension();
         }
     }
 
     protected boolean shouldKeepRunning(ServerWorld world, LivingEntity entity, long time) {
-        Optional<GlobalPos> optional = entity.getBrain().getOptionalMemory(ExampleMod.MOSQUE_POINT);
+        Optional<GlobalPos> optional = entity.getBrain().getOptionalMemory(ReligiousVillagersMod.MOSQUE_POINT);
         if (!optional.isPresent()) {
             return false;
         } else {
             BlockPos blockPos = optional.get().getPos();
-            return entity.getBrain().hasActivity(ExampleMod.PRAY)
+            return entity.getBrain().hasActivity(ReligiousVillagersMod.PRAY)
                     && entity.getY() > (double)blockPos.getY() + 0.4D
                     && blockPos.isWithinDistance(entity.getPos(), 1.14D);
         }

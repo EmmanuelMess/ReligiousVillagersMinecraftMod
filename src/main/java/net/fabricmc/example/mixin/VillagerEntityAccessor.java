@@ -22,4 +22,9 @@ public interface VillagerEntityAccessor {
     static void setMemoryModules(ImmutableList<MemoryModuleType<?>> _) {
         throw new UnsupportedOperationException();
     }
+
+    @Accessor("MEMORY_MODULES")
+    static ImmutableList<MemoryModuleType<?>> getMemoryModules() {
+        throw new UnsupportedOperationException();
+    }
 }
