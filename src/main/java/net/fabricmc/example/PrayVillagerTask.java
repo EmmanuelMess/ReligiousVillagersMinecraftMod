@@ -17,8 +17,6 @@ public class PrayVillagerTask extends Task<VillagerEntity> {
     }
 
     protected boolean shouldRun(ServerWorld world, VillagerEntity entity) {
-        ReligiousVillagersMod.LOGGER.info("shouldRun!");
-
         if (entity.hasVehicle()) {
             return false;
         } else {
@@ -30,8 +28,6 @@ public class PrayVillagerTask extends Task<VillagerEntity> {
     }
 
     protected boolean shouldKeepRunning(ServerWorld world, VillagerEntity entity, long time) {
-        ReligiousVillagersMod.LOGGER.info("shouldKeepRunning!");
-
         Optional<GlobalPos> optional = entity.getBrain().getOptionalMemory(ReligiousVillagersMod.MOSQUE_POINT);
         BlockPos blockPos = optional.get().getPos();
         return entity.getBrain().hasActivity(ReligiousVillagersMod.PRAY)
@@ -40,7 +36,7 @@ public class PrayVillagerTask extends Task<VillagerEntity> {
     }
 
     protected void run(ServerWorld world, VillagerEntity entity, long time) {
-        ReligiousVillagersMod.LOGGER.info("run!");
+        ReligiousVillagersMod.LOGGER.info("Pray:run!");
 
         entity.getBrain().getOptionalMemory(MemoryModuleType.OPENED_DOORS).ifPresent((set) -> {
             OpenDoorsTask.closeOpenedDoors(world, ImmutableList.of(), 0, entity, entity.getBrain());

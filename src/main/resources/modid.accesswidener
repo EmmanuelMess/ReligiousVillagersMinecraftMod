@@ -8,3 +8,6 @@ accessible method net/minecraft/world/poi/PointOfInterestType register (Ljava/la
 accessible method net/minecraft/world/poi/PointOfInterestType getAllStatesOf (Lnet/minecraft/block/Block;)Ljava/util/Set;
 
 accessible method net/minecraft/entity/ai/brain/task/VillagerTaskListProvider createBusyFollowTask ()Lcom/mojang/datafixers/util/Pair;
+
+accessible field net/minecraft/structure/pool/StructurePool elementCounts Lcom/google/common/collect/ImmutableList;
+accessible field net/minecraft/structure/pool/StructurePool projection Lnet/minecraft/structure/pool/StructurePool$Projection;

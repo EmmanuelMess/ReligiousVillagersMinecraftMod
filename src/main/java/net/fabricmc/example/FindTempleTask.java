@@ -15,8 +15,6 @@ public class FindTempleTask extends Task<VillagerEntity> {
     }
 
     protected boolean shouldRun(ServerWorld world, VillagerEntity entity) {
-        ReligiousVillagersMod.LOGGER.info("shouldRun!");
-
         return world.getPointOfInterestStorage()
                 .getNearestPosition(
                         ReligiousVillagersMod.BELIEVER.getCompletionCondition(),
@@ -27,7 +25,7 @@ public class FindTempleTask extends Task<VillagerEntity> {
     }
 
     protected void run(ServerWorld world, VillagerEntity entity, long time) {
-        ReligiousVillagersMod.LOGGER.info("run!");
+        ReligiousVillagersMod.LOGGER.info("FindTemple:run!");
 
         world.getPointOfInterestStorage()
                 .getPositions(
